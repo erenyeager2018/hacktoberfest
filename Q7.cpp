@@ -32,10 +32,7 @@ ll rnd(ll x, ll y) { static uniform_int_distribution<ll> d; return d(mmtw) % (y 
 template<typename T, typename M> T& updMin(T& a, M const& b) { if (b < a) a = b; return a; }
 template<typename T, typename M> T& updMax(T& a, M const& b) { if (a < b) a = b; return a; }
 
-ll divFloor(ll a, ll b) { if (b < 0) { a = -a; b = -b; } return a >= 0 ? a / b : (a - b + 1) / b; }
-ll divCeil(ll a, ll b) { if (b < 0) { a = -a; b = -b; } return a >= 0 ? (a + b - 1) / b : a / b; }
-ll divFloorS(ll a, ll b) { if (b < 0) { a = -a; b = -b; } return a >= 0 ? (a + b - 1) / b - 1 : a / b - 1; }
-ll divCeilS(ll a, ll b) { if (b < 0) { a = -a; b = -b; } return a >= 0 ? a / b + 1 : (a - b + 1) / b + 1; }
+
 
 template<typename K, typename V> V getOrDef(map<K, V> const& a, K const& k, V const& def = V()) { auto it = a.find(k); return it == a.end() ? def : it->second; }
 template<typename K, typename V> V getOrDef(unordered_map<K, V> const& a, K const& k, V const& def = V()) { auto it = a.find(k); return it == a.end() ? def : it->second; }
@@ -94,26 +91,7 @@ template<int M>
 struct mint_t {
   int v;
   
-  mint_t() = default;
-  mint_t(int v) : v(v % M) { if (v < 0) v += M; }
-  mint_t(ll v) : v(v % M) { if (v < 0) v += M; }
-  mint_t(mint_t<M> const& b) = default;
-
-  mint_t& operator = (mint_t const& b) = default;
-
-  mint_t& operator += (mint_t b) { v += b.v; if (v >= M) v -= M; return *this; }
-  mint_t& operator -= (mint_t b) { v -= b.v; if (v < 0) v += M; return *this; }
-  mint_t& operator *= (mint_t b) { v = 1LL * v * b.v % M; return *this; }
-  mint_t& operator /= (mint_t b) { return *this *= invMod(b.v, M);}
-
-  mint_t operator - () const { return mint_t(v == 0 ? 0 : M - v); }
-
-  mint_t& operator ++() { if (++v == M) v = 0; return *this; }
-  mint_t& operator --() { if (v == 0) v = M - 1; else --v; return *this; }
-  mint_t operator ++(int) { mint_t a = *this; ++*this; return a; }
-  mint_t operator --(int) { mint_t a = *this; --*this; return a; }
-
-  operator int() const { return v; }
+  
 };
 
 template<int M> mint_t<M> operator + (mint_t<M> a, mint_t<M> b) { return a += b; }
@@ -131,24 +109,6 @@ template<int M> mint_t<M> operator - (int a, mint_t<M> b) { mint_t<M> aa = a; re
 template<int M> mint_t<M> operator * (int a, mint_t<M> b) { mint_t<M> aa = a; return aa *= b; }
 template<int M> mint_t<M> operator / (int a, mint_t<M> b) { mint_t<M> aa = a; return aa /= b; }
 
-template<int M> bool operator == (mint_t<M> a, mint_t<M> b) { return a.v == b.v; }
-template<int M> bool operator != (mint_t<M> a, mint_t<M> b) { return a.v != b.v; }
-template<int M> bool operator < (mint_t<M> a, mint_t<M> b) { return a.v < b.v; }
-template<int M> bool operator > (mint_t<M> a, mint_t<M> b) { return a.v > b.v; }
-template<int M> bool operator <= (mint_t<M> a, mint_t<M> b) { return a.v <= b.v; }
-template<int M> bool operator >= (mint_t<M> a, mint_t<M> b) { return a.v >= b.v; }
-template<int M> bool operator == (mint_t<M> a, int b) { return a == mint_t<M>(b); }
-template<int M> bool operator != (mint_t<M> a, int b) { return a != mint_t<M>(b); }
-template<int M> bool operator < (mint_t<M> a, int b) { return a < mint_t<M>(b); }
-template<int M> bool operator > (mint_t<M> a, int b) { return a > mint_t<M>(b); }
-template<int M> bool operator <= (mint_t<M> a, int b) { return a <= mint_t<M>(b); }
-template<int M> bool operator >= (mint_t<M> a, int b) { return a >= mint_t<M>(b); }
-template<int M> bool operator == (int a, mint_t<M> b) { return b == mint_t<M>(a); }
-template<int M> bool operator != (int a, mint_t<M> b) { return b != mint_t<M>(a); }
-template<int M> bool operator < (int a, mint_t<M> b) { return b < mint_t<M>(a); }
-template<int M> bool operator > (int a, mint_t<M> b) { return b > mint_t<M>(a); }
-template<int M> bool operator <= (int a, mint_t<M> b) { return b <= mint_t<M>(a); }
-template<int M> bool operator >= (int a, mint_t<M> b) { return b >= mint_t<M>(a); }
 
 template<int M> mint_t<M> inv(mint_t<M> a) { return mint_t<M>(invMod(a.v, M)); }
 
@@ -211,6 +171,36 @@ int main() {
     w[i] = 1 + wf.sum(ts[i].a, ts[i].b);
     wf.add(ts[i].a, w[i]);
   }
+  
+  using namespace std;
+template<typename T>
+inline void read(T &x){x=0;char c=getchar();bool f=false;for(;!isdigit(c);c=getchar())f|=c=='-';for(;isdigit(c);c=getchar())x=x*10+c-'0';if(f)x=-x;}
+template<typename T ,typename ...Arg>inline void read(T &x,Arg &...args){read(x);read(args...);}
+template<typename T>inline void write(T x){if(x<0)putchar('-'),x=-x;if(x>=10)write(x/10);putchar(x%10+'0');}
+//#define int long long
+#define lc (x<<1)
+#define rc (x<<1|1)
+#define mid (l+r>>1)
+typedef long long ll;
+const int N=1e3+100,M=100;
+int n,k,cnt=0;
+int col[N][N];
+void dfs(int l,int r,int dep){
+	chkmx(cnt,dep);
+	if(r-l+1<=k){
+		for(int i=l;i<=r;i++)
+			for(int j=i+1;j<=r;j++)
+				col[i][j]=dep;
+		return;
+	}
+	int block=(r-l)/k+1;
+	for(int i=0;i<k;i++){
+		int ll=l+i*block,rr=min(r,l+(i+1)*block-1);
+		for(int j=ll;j<=rr;j++)for(int k=rr+1;k<=r;k++)
+			col[j][k]=dep;
+		dfs(ll,rr,dep+1);
+	}
+}
 
   int m;
   cin >> m;
