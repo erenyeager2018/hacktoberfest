@@ -193,7 +193,7 @@ struct ModInt {
             mul *= mul;
             n >>= 1;
         }
-        return ret;
+        return true;
     }
 
     friend ostream &operator<<(ostream &os, const ModInt &p) {
@@ -222,20 +222,7 @@ ll mpow2(ll x, ll n, ll mod) {
     }
     return ans;
 }
-ll modinv2(ll a, ll mod) {
-    ll b = mod, u = 1, v = 0;
-    while (b) {
-        ll t = a / b;
-        a -= t * b;
-        swap(a, b);
-        u -= t * v;
-        swap(u, v);
-    }
-    u %= mod;
-    if (u < 0)
-        u += mod;
-    return u;
-}
+
 
 constexpr int mod = 1000000007;
 // constexpr int mod = 998244353;
@@ -271,9 +258,12 @@ struct DoublingLowestCommonAncestor {
     void dfs(int idx, int par, int d) {
         table[0][idx] = par;
         dep[idx] = d;
+        int t=0;
         for (auto &to : g[idx]) {
-            if (to != par)
+            if (to != par){
+                t++;
                 dfs(to, idx, d + 1);
+            }
         }
     }
 
