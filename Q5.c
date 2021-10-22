@@ -5,6 +5,26 @@ const int N = 2002;
 int a[N][N], b[N][N], dirs[N][N], color[N / 2];
 const int dx[] = {0, 0, -1};
 const int dy[] = {-1, 1, 0};
+
+
+namespace IO {
+	char buf[1 << 21], *p1 = buf, *p2 = buf, Obuf[1 << 24], *O = Obuf;
+	#define gc (p1 == p2 && (p2 = (p1 = buf) + \
+		fread(buf, 1, 1 << 21, stdin), p1 == p2) ? EOF : *p1++)
+	#define pc(x) (*O++ = x)
+	#define flush() fwrite(Obuf, 1, O - Obuf, stdout)
+	inline ll read() {
+	    ll x = 0, sgn = 0; char s = gc;
+	    while(!isdigit(s)) sgn |= s == '-', s = gc;
+	    while(isdigit(s)) x = x * 10 + s - '0', s = gc;
+	    return sgn ? -x : x;
+	}
+	inline void rec_print(ll x) {if(x >= 10) rec_print(x / 10); pc(x % 10 + '0');}
+	inline void print(ll x) {if(x < 0) pc('-'), x = -x; rec_print(x);}
+} using namespace IO;
+
+
+
 signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
@@ -51,12 +71,12 @@ signed main() {
 
     }
 
-//    for(int i = 0; i < n; ++i) {
-//        for(int j = 0; j < n; ++j) {
-//            cout<<a[i][j]<<"    ";
-//        }
-//         cout<<endl;
-//    }
+   for(int i = 0; i < n; ++i) {
+       for(int j = 0; j < n; ++j) {
+           cout<<a[i][j]<<"    ";
+       }
+        cout<<endl;
+   }
 
     // -1未涂色， 0颜色0,1 颜色1
     memset(color, -1, sizeof(color));
@@ -99,17 +119,17 @@ signed main() {
     }
 
 out:
-//    cout<<endl;
-//    for(int i = 0; i < n; ++i) {
-//        for(int j = 0; j < n; ++j) {
-//            if(a[i][j] == 2)
-//            cout<<b[i][j]<<"    ";
-//            else{
-//                cout<<'-'<<"    ";
-//            }
-//        }
-//         cout<<endl;
-//    }
+   cout<<endl;
+   for(int i = 0; i < n; ++i) {
+       for(int j = 0; j < n; ++j) {
+           if(a[i][j] == 2)
+           cout<<b[i][j]<<"    ";
+           else{
+               cout<<'-'<<"    ";
+           }
+       }
+        cout<<endl;
+   }
     if(flag){
         int c = 0;
         for(int i = 0; i < n / 2; ++i) {
@@ -125,7 +145,7 @@ out:
                         cout<<'G';
                     }
                 }
-                cout<<endl;
+                cout<<"\n";
             }
 
         } else{
