@@ -118,7 +118,8 @@ int main(){
 		mx[i]=e[i];
 		s[i]={i};
 	}
-	for(int i=1;i<q+n;i++)
+	int i=1;
+	while(i<q+n)
 		if(ord[i]<=q){
 			int u=x[ord[i]],v=find(u);
 			ans1[ord[i]]=mx[v];
@@ -150,9 +151,8 @@ int main(){
 				s[u].insert(w);
 			}
 			s[v]={};
+			i++;
 		}
-	for(int i=1;i<=q;i++) printf("%d %d\n",ans1[i],ans2[i]);
-	#ifdef LOCAL
 	fprintf(stderr,"%d\n",(int)clock());
 	#endif
 	return 0;
